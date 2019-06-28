@@ -13,9 +13,11 @@ public class Event {
 	private String agenda;
 	private String organizer;
 	private String roomName;
+	private String roomSpecifications;
 	private List<String> members = new ArrayList<String>();
 	private Date startDate;
 	private Date endDate;
+	private String repeat;
 
 	public String getSubject() {
 		return subject;
@@ -49,6 +51,14 @@ public class Event {
 		this.roomName = roomName;
 	}
 
+	public String getRoomSpecifications() {
+		return roomSpecifications;
+	}
+
+	public void setRoomSpecifications(String roomSpecifications) {
+		this.roomSpecifications = roomSpecifications;
+	}
+
 	public List<String> getMembers() {
 		return members;
 	}
@@ -74,34 +84,44 @@ public class Event {
 		this.endDate = endDate;
 	}
 
+	public String getRepeat() {
+		return repeat;
+	}
+
+	public void setRepeat(String repeat) {
+		this.repeat = repeat;
+	}
+
 	@Override
 	public String toString() {
-		
-		SimpleDateFormat dateFormat=new SimpleDateFormat("E MMM dd,yyyy hh:mm a");
-		String date=null;
-		if(DateUtils.isSameDay(startDate,endDate)){
-			String start=dateFormat.format(startDate);
-			String end=new SimpleDateFormat("hh:mm a").format(endDate);
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("E MMM dd,yyyy hh:mm a");
+		String date = null;
+		if (DateUtils.isSameDay(startDate, endDate)) {
+			String start = dateFormat.format(startDate);
+			String end = new SimpleDateFormat("hh:mm a").format(endDate);
 			date = start + "-" + end;
-		}else {
-		String start=dateFormat.format(startDate);
-		String end=dateFormat.format(endDate);
-		date = start + "-" + end;
+		} else {
+			String start = dateFormat.format(startDate);
+			String end = dateFormat.format(endDate);
+			date = start + "-" + end;
 		}
-		
+
 		StringBuilder event = new StringBuilder();
 		event.append("\nEvent:\n");
 		event.append("Subject: " + subject + "\n");
 		event.append("Agenda: " + agenda + "\n");
-		event.append("Organizer: "+organizer+"\n");
+		event.append("Organizer: " + organizer + "\n");
 		event.append("When: " + date + "\n");
-		event.append("Where: "+ roomName+"\n");
+		if (repeat != null && !repeat.equals("none"))
+			event.append("Repeat: " + repeat + "\n");
+		event.append("Where: " + roomName + " [" + roomSpecifications + "]" + "\n");
 		event.append("Members: \n");
-		for(String member:members) {
-			event.append("- "+member);
+		for (String member : members) {
+			event.append("- " + member);
 			event.append("\n");
 		}
-		return event.toString();
+		return new String(event);
 	}
 
 }

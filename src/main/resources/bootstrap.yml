@@ -11,8 +11,6 @@ spring:
   mail:
     host: smtp.mail.yahoo.com
     port: 465
-    username: radiologyreport@yahoo.com
-    password: 963852123
     properties:
       mail:
         smtp:
@@ -20,6 +18,9 @@ spring:
         socketFactory:
           port: 465
           class: javax.net.ssl.SSLSocketFactory
+    username: radiologyreport@yahoo.com
+    password: 963852123
+        
     
 server:
   port: 8000

@@ -43,12 +43,12 @@ public class EmailUtility {
 		try {
 			helper = new MimeMessageHelper(message, true);
 
-			helper.setFrom(new InternetAddress("noreply@yahoo.com", "Do not reply"));
+			helper.setFrom(new InternetAddress(mailFrom, "Do not reply"));
 			helper.setTo(mailTo);
 
 			helper.setSubject(subject);
 
-			helper.setText(body, true);
+			helper.setText(body, false);
 
 			javaMailSender.send(message);
 
