@@ -2,6 +2,7 @@ package org.jeavio.meetin.notification.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -28,29 +29,30 @@ public class EmailUtility {
 	@Value("${spring.mail.username}")
 	private String mailFrom;
 
-	public void sendNotification(String triggerType, Event event, String emailId) {
+	public void sendNotification(String triggerType, Event event, List<String> emailIds) {
 
 		String subject = getSubject(triggerType, event);
 		String body = getBody(triggerType, event);
-		sendMail(emailId, subject, body);
+		sendMail(emailIds, subject, body);
+		
 	}
 
-	public void sendMail(String mailTo, String subject, String body) {
+	public void sendMail(List<String> emailIds, String subject, String body) {
 
 		MimeMessage message = javaMailSender.createMimeMessage();
 
 		MimeMessageHelper helper;
 		try {
-			helper = new MimeMessageHelper(message, true);
+			helper = new MimeMessageHelper(message, false);
 
 			helper.setFrom(new InternetAddress(mailFrom, "Do not reply"));
-			helper.setTo(mailTo);
-
+			helper.setTo(emailIds.toArray(new String[emailIds.size()]));
 			helper.setSubject(subject);
 
 			helper.setText(body, false);
-
+			
 			javaMailSender.send(message);
+			
 
 		} catch (MessagingException e) {
 			log.error("Error sending mail");
@@ -62,26 +64,36 @@ public class EmailUtility {
 
 	}
 
+	
 	public String getBody(String type, Event event) {
 		String emailBody = null;
 		if (type.equals("create")) {
 			emailBody = getCreateEventBody(event);
-		} else {
+		} else if(type.equals("cancel")){
 			emailBody = getCancelEventBody(event);
+		}else if(type.equals("modify")) {
+			emailBody = getModifiedEventBody(event);
 		}
 		return emailBody;
 	}
 
+	private String getModifiedEventBody(Event event) {
+		StringBuilder body = new StringBuilder();
+		body.append("\n\nThe following event has been modified.\n\n");
+		body.append(event.toString());
+		return new String(body);
+	}
+
 	public String getCreateEventBody(Event event) {
 		StringBuilder body = new StringBuilder();
-		body.append("You have been invited to the following event.\n");
+		body.append("\n\nYou have been invited to the following event.\n\n");
 		body.append(event.toString());
 		return new String(body);
 	}
 
 	public String getCancelEventBody(Event event) {
 		StringBuilder body = new StringBuilder();
-		body.append("The following event has been canceled.\n");
+		body.append("\n\nThe following event has been canceled.\n\n");
 		body.append(event.toString());
 		return new String(body);
 
@@ -92,10 +104,21 @@ public class EmailUtility {
 		String emailSubject = null;
 		if (type.equals("create")) {
 			emailSubject = getCreateEventSubject(event);
-		} else {
+		} else if(type.equals("cancel")){
 			emailSubject = getCancelEventSubject(event);
+		}else if(type.equals("modify")) {
+			emailSubject = getModifyEventSubject(event);
 		}
 		return emailSubject;
+	}
+
+	private String getModifyEventSubject(Event event) {
+		StringBuilder subject = new StringBuilder();
+		subject.append("Modified: ");
+		subject.append(event.getSubject());
+		subject.append("@");
+		subject.append(getEventTime(event));
+		return new String(subject);
 	}
 
 	private String getCancelEventSubject(Event event) {

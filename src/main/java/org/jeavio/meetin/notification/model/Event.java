@@ -108,15 +108,15 @@ public class Event {
 		}
 
 		StringBuilder event = new StringBuilder();
-		event.append("\nEvent:\n");
-		event.append("Subject: " + subject + "\n");
-		event.append("Agenda: " + agenda + "\n");
-		event.append("Organizer: " + organizer + "\n");
-		event.append("When: " + date + "\n");
+		event.append("\nEvent :\n");
+		event.append("Subject : " + subject + "\n");
+		event.append("Agenda : " + agenda + "\n");
+		event.append("Organizer : " + organizer + "\n");
+		event.append("When : " + date + "\n");
 		if (repeat != null && !repeat.equals("none"))
-			event.append("Repeat: " + repeat + "\n");
-		event.append("Where: " + roomName + " [" + roomSpecifications + "]" + "\n");
-		event.append("Members: \n");
+			event.append("Repeat : " + repeat + "\n");
+		event.append("Where : " + roomName + " [" + roomSpecifications + "]" + "\n");
+		event.append("Members : \n");
 		for (String member : members) {
 			event.append("- " + member);
 			event.append("\n");

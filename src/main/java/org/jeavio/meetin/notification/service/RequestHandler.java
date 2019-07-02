@@ -14,11 +14,9 @@ public class RequestHandler {
 	
 	public Response processRequest(NotificationRequest request) {
 		String triggerType = request.getTriggerType();
-		if (triggerType.equals("create") || triggerType.equals("cancel")) {
+		if (triggerType.equals("create") || triggerType.equals("cancel") || triggerType.equals("modify")) {
 			Event event = request.getEvent();
-			for(String emailId:request.getEmailIds()) {
-				emailUtility.sendNotification(triggerType,event,emailId);
-			}
+			emailUtility.sendNotification(triggerType,event,request.getEmailIds());
 			Response response = new Response(200, "Success");
 			return response;
 		} else {
