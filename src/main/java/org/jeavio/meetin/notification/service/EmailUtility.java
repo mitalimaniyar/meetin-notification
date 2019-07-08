@@ -2,7 +2,7 @@ package org.jeavio.meetin.notification.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -29,7 +29,7 @@ public class EmailUtility {
 	@Value("${spring.mail.username}")
 	private String mailFrom;
 
-	public void sendNotification(String triggerType, Event event, List<String> emailIds) {
+	public void sendNotification(String triggerType, Event event, Set<String> emailIds) {
 
 		String subject = getSubject(triggerType, event);
 		String body = getBody(triggerType, event);
@@ -37,7 +37,7 @@ public class EmailUtility {
 		
 	}
 
-	public void sendMail(List<String> emailIds, String subject, String body) {
+	public void sendMail(Set<String> emailIds, String subject, String body) {
 
 		MimeMessage message = javaMailSender.createMimeMessage();
 
