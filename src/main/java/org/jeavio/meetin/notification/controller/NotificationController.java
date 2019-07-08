@@ -1,7 +1,7 @@
 package org.jeavio.meetin.notification.controller;
 
 import org.jeavio.meetin.notification.model.NotificationRequest;
-import org.jeavio.meetin.notification.model.Response;
+import org.jeavio.meetin.notification.model.ApiResponse;
 import org.jeavio.meetin.notification.service.RequestHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ public class NotificationController {
 	
 	@RequestMapping(method = RequestMethod.POST,path = "/api/notify")
 	public ResponseEntity<?> sendNotification(@RequestBody NotificationRequest body){
-		Response response = requestHandler.processRequest(body);
+		ApiResponse response = requestHandler.processRequest(body);
 		
 		if(response.getCode()==200)
 			return ResponseEntity.status(HttpStatus.OK).body(response);
