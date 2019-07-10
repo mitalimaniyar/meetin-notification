@@ -15,4 +15,4 @@ server:
 
 logging:
   level: 
-    org.jeavio.meetin.notification: DEBUG
+    org.jeavio.meetin.notification: INFO
